@@ -1,6 +1,6 @@
 # Druid Cluster
 
-Architecture
+**Architecture**
 
 As suggested by the maintainers
 
@@ -13,14 +13,14 @@ As suggested by the maintainers
 
 ![Architecture](https://druid.apache.org/docs/latest/assets/druid-architecture.png)
 
-Important design goals
+**Important design goals**
 
 - Cluster should be managed within a kubernetes cluster
 - Data, Query and Master servers should each be independently deplpyable and scalable
 - Good, central logs/monitoring support
 - Zookeeper quorum should be scalable
 
-Less important design goals
+**Less important design goals**
 
 - Secured (Secrets, TLS etc...)
 - Storages should be (relatively) easily replaceable
