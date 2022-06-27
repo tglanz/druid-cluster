@@ -18,4 +18,5 @@ Important design goals
 
 Less important design goals
 
+- Secured (Secrets, TLS etc...)
 - Storages should be (relatively) easily replaceable
