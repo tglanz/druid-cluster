@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: metadata
+  labels:
+    app: druid
+    service: metadata
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: druid
+      service: metadata
+  template:
+    metadata:
+      name: metadata
+      labels:
+        app: druid
+        service: metadata
+    spec:
+      containers:
+        - name: metadata
+          image: tglanz/druid-metadata
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: postgres-server
+              containerPort: 5432
+          envFrom:
+            - configMapRef:
+                name: metadata-credentials
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: metadata
+  labels:
+    app: druid
+    service: metadata
+spec:
+  ports:
+    - port: 5432
+      targetPort: 5432
+  selector:
+    app: druid
+    service: metadata
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: metadata-credentials
+data:
+  # TODO: secrets, not config map
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: postgres
+  POSTGRES_DATABASE: postgres
+  DRUID_METADATA_USER: druid
+  DRUID_METADATA_PASSWORD: druid
+  DRUID_METADATA_DATABASE: druid
