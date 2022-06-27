@@ -9,14 +9,12 @@ destination_path=$root_dir/binaries/druid.tar.gz
 destination_dir=$(dirname $destination_path)
 mkdir -p $destination_dir 
 
-temp_destination_dir=$destination_dir/$(mktemp XXXXX)
+temp_destination_dir=$destination_dir/$(mktemp -u XXXXX)
 mkdir -p $temp_destination_dir
 
-
 wget $release_url -O $destination_path
-tar -xvzf $destination_path
+tar -xvzf $destination_path -C $temp_destination_dir
 
-tar -C $temp_destination_dir -xvzf $destination_path
 mv $temp_destination_dir/*/** $destination_dir
 
 rm -rf $destination_path
