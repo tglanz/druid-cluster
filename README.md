@@ -2,12 +2,16 @@
 
 Architecture
 
+As suggested by the maintainers
+
 - D Data servers, each containing a MiddleManager and a Historical
 - Q Query servers, each containing a Broker and a Router
 - M Master servers, each containing a Coordinator and an Overlord
 - Zookeeper cluster
 - Postgres metadata storage
 - S3 deep storage
+
+![Architecture](https://druid.apache.org/docs/latest/assets/druid-architecture.png)
 
 Important design goals
 
