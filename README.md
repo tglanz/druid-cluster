@@ -13,6 +13,7 @@ Important design goals
 
 - Cluster should be managed within a kubernetes cluster
 - Data, Query and Master servers should each be independently deplpyable and scalable
+- Good, central logs/monitoring support
 - Zookeeper quorum should be scalable
 
 Less important design goals
