@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: druid-data 
+  labels:
+    app: druid
+    service: druid-data 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: druid
+      service: druid-data 
+  template:
+    metadata:
+      name: druid-data 
+      labels:
+        app: druid
+        service: druid-data 
+    spec:
+      containers:
+        - name: druid-data 
+          image: tglanz/druid-data
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: historical 
+              containerPort: 8083 
+            - name: middle-manager 
+              containerPort: 8091 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: druid-data 
+  labels:
+    app: druid
+    service: druid-data 
+spec:
+  ports:
+    - port: 8083 
+      targetPort: 8083 
+      name: historicalr
+    - port: 8091
+      targetPort: 8091 
+      name: middle-manager
+  selector:
+    app: druid
+    service: druid-data 
