@@ -19,4 +19,4 @@ RUN wget https://dlcdn.apache.org/druid/$DRUID_VERSION/apache-druid-$DRUID_VERSI
 
 WORKDIR ${DRUID_HOME}
 
-COPY conf/common.runtime.properties conf/
+COPY conf/druid/cluster/_common conf/druid/cluster/_common
