@@ -39,7 +39,7 @@ spec:
   ports:
     - port: 8083 
       targetPort: 8083 
-      name: historicalr
+      name: historical
     - port: 8091
       targetPort: 8091 
       name: middle-manager
