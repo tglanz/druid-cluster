@@ -4,11 +4,10 @@ cd $(dirname $0)
 
 namespace=druid
 
-../druid-node/build-image.sh
-../druid-master/build-image.sh
+for name in node master query; do
+    ../druid-$name/build-image.sh
+done
 
-kubectl create namespace $namespace
-
-kubectl --namespace $namespace apply -f ../metadata/metadata.yaml
-kubectl --namespace $namespace apply -f ../zookeeper/zookeeper.yaml
-kubectl --namespace $namespace apply -f ../druid-master/druid-master.yaml
+for name in metadata zookeeper druid-master druid-query; do
+    kubectl --namespace $namespace apply -f ../$name/$name.yaml
+done
