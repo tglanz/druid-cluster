@@ -38,7 +38,7 @@ spec:
             - name: ZOO_MY_ID
               value: "1"
             - name: ZOO_SERVERS
-              value: server.1=0.0.0.0:2888:3888;2181 server.2=zookeeper2:2888:3888;2181
+              value: server.1=0.0.0.0:2888:3888;2181 server.2=zookeeper2:2888:3888;2181 server.3=zookeeper3:2888:3888;2181
             - name: ZOO_4LW_COMMANDS_WHITELIST
               value: "*"
 ---
@@ -109,7 +109,7 @@ spec:
             - name: ZOO_MY_ID
               value: "2"
             - name: ZOO_SERVERS
-              value: server.1=zookeeper1:2888:3888;2181 server.2=0.0.0.0:2888:3888;2181
+              value: server.1=zookeeper1:2888:3888;2181 server.2=0.0.0.0:2888:3888;2181 server.3=zookeeper3:2888:3888;2181
             - name: ZOO_4LW_COMMANDS_WHITELIST
               value: "*"
 ---
@@ -139,3 +139,75 @@ spec:
     app: druid
     service: zookeeper 
     zookeeper-id: "2"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zookeeper3
+  labels:
+    app: druid
+    service: zookeeper
+    zookeeper-id: "3"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: druid
+      service: zookeeper
+      zookeeper-id: "3"
+  template:
+    metadata:
+      name: zookeeper3
+      labels:
+        app: druid
+        service: zookeeper
+        zookeeper-id: "3"
+    spec:
+      containers:
+        - name: zookeeper
+          image: zookeeper:3.5.9
+          imagePullPolicy: IfNotPresent 
+          ports:
+            - name: client
+              containerPort: 2181
+            - name: follower
+              containerPort: 2888 
+            - name: election
+              containerPort: 3888
+            - name: admin-server
+              containerPort: 8080
+          env:
+            - name: ZOO_MY_ID
+              value: "3"
+            - name: ZOO_SERVERS
+              value: server.1=zookeeper1:2888:3888;2181 server.2=zookeeper2:2888:3888;2181 server.3=0.0.0.0:2888:3888;2181
+            - name: ZOO_4LW_COMMANDS_WHITELIST
+              value: "*"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zookeeper3
+  labels:
+    app: druid
+    service: zookeeper
+    zookeeper-id: "3"
+spec:
+  ports:
+    - port: 2181
+      targetPort: 2181
+      name: client
+    - port: 2888 
+      targetPort: 2888 
+      name: follower
+    - port: 3888 
+      targetPort: 3888 
+      name: election
+    - port: 8080 
+      targetPort: 8080 
+      name: admin-server
+  selector:
+    app: druid
+    service: zookeeper 
+    zookeeper-id: "3"
+
